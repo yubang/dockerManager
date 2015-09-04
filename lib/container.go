@@ -4,6 +4,7 @@ import(
     "os/exec"
     "fmt"
     "strconv"
+    "os"
 )
 
 
@@ -19,9 +20,18 @@ func BuildContainer(imageName string, port int, shareDirPath string)(containerId
     containerId = "0"
     result = true
     
-    portData := strconv.Itoa(port) + ":" + strconv.Itoa(port)
+    portData := strconv.Itoa(port) + ":80"
     
-    command := "docker run -d -p " + portData + " centos:6 /bin/bash -c 'while true;do sleep 500;done'"
+    //判断共享目录是否有文件，如果没有则需要创建必须文件
+    _, err := os.Stat(shareDirPath)
+    if os.IsNotExist(err){
+        os.MkdirAll(shareDirPath+"/code", 0777)
+        os.MkdirAll(shareDirPath+"/log", 0777)
+    }
+    
+    shareData := "  -v  " + shareDirPath + ":/data "
+    
+    command := "docker run -d -p " + portData + shareData +  imageName + "  /bin/bash /var/script/start.sh"
     cmd := exec.Command("/bin/bash", "-c", command)
     data,_ := cmd.Output()
     containerId = string(data)
