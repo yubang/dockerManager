@@ -8,7 +8,19 @@ package lib
 import(
     "os"
     "fmt"
+    "bufio"
+    "strings"
 )
+
+/*
+ *获取应用常量
+ *
+ */
+func GetApplicationValueFromKey(key string)(value string){
+    
+    return "123"
+}
+
 
 /*
  *把参数写入配置文件
@@ -62,5 +74,21 @@ func SetProcessSetting(){
  *获取配置参数
  */
 func GetSettingValue(key string) (value string){
-    return "/tmp/git"
+    fp, err := os.Open("data/config/base.conf")
+    defer fp.Close()
+    if err == nil{
+        reader := bufio.NewReader(fp)
+        for{
+            text, err := reader.ReadString('\n')
+            if err == nil{
+                arrs := strings.Split(text,"=")
+                if arrs[0] == key{
+                    return strings.Replace(arrs[1], "\n", "", -1)
+                }
+            }else{
+                break
+            }
+        }
+    }
+    return ""
 }

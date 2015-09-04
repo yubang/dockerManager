@@ -19,16 +19,36 @@ func UpdateCode(appId int, gitUrl string){
     
     //判断目录是否存在
     _,  err := os.Stat(gitPath)
-    if err == nil{
+    if os.IsExist(err){
         command = "cd " + gitPath + " && git pull origin master"
     }else{
         command = " git clone " + gitUrl + " " + gitPath
     }
         
-    fmt.Println(command)
+    fmt.Println("执行命令：" + command)
     cmd := exec.Command("/bin/bash", "-c", command)
-    err = cmd.Start()
+    cmd.Run()
     
-     fmt.Println(err)
+}
+
+
+/*
+ *更新应用代码
+ *@param appId 应用ID
+ */
+func UpdateApplicationCode(appId int){
     
+    gitPath := GetSettingValue("gitPath") + "/" + strconv.Itoa(appId)
+    applicationPath := GetSettingValue("applicationPath") +  "/" + strconv.Itoa(appId)   +  "/code/"
+    
+    command := "mkdir -p " + applicationPath
+    cmd := exec.Command("/bin/bash", "-c", command)
+    cmd.Run()
+    fmt.Println("执行命令：" + command)
+    
+    command = "rm -rf " + applicationPath
+    command =  command + " && cp -r " + gitPath + " " + applicationPath
+    cmd = exec.Command("/bin/bash", "-c", command)
+    cmd.Run()
+    fmt.Println("执行命令：" + command)
 }
