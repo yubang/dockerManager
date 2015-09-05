@@ -37,9 +37,9 @@ func BuildContainer(imageName string, port int, appId int)(containerId string, r
     cmd := exec.Command("/bin/bash", "-c", command)
     data,_ := cmd.Output()
     containerId = string(data)
-    cmd.Start()
+    //cmd.Run()
     fmt.Println("执行命令：" + command)
-    
+    fmt.Println(containerId)
     return containerId, result
 }
 

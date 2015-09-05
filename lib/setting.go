@@ -10,6 +10,7 @@ import(
     "fmt"
     "bufio"
     "strings"
+    "strconv"
 )
 
 /*
@@ -117,4 +118,33 @@ func checkDirExist(dirPath string)(result bool){
     } else {
         return fi.IsDir()
     }
+}
+
+
+/*
+*获取一个可用的端口号
+*
+*/
+func GetAbleUsePort()(port int){
+    port = 20000
+    
+    _, err := os.Stat("data/config/port.txt")
+    if os.IsNotExist(err){
+        fi, _ := os.Create("data/config/port.txt")
+        defer fi.Close()
+        fi.Write([]byte(strconv.Itoa(port)))
+    }else{
+        fi, _ := os.Open("data/config/port.txt")
+        reader := bufio.NewReader(fi)
+        text, _ := reader.ReadString('\n')
+        fi.Close()
+        
+        fi, _ = os.Create("data/config/port.txt")
+        port, _ = strconv.Atoi(text)
+        port ++
+        fi.WriteString(strconv.Itoa(port))
+        fi.Close()
+    }
+    
+    return port
 }
