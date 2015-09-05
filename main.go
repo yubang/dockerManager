@@ -2,10 +2,11 @@ package main
 
 import(
     "./lib"
-    "fmt"
+    //"fmt"
 )
 
 func main(){
+    /*
     lib.SetProcessSetting()
     //lib.UpdateCode(1, "git@github.com:yubang/dockerManager.git")
     //lib.UpdateApplicationCode(1)
@@ -14,5 +15,7 @@ func main(){
     lib.UpdateApplicationCode(5)
     //lib.StartContainer(containerId)
     //lib.RemoveContainer(containerId)
-    fmt.Println(containerId)
+    fmt.Println(containerId)*/
+    lib.SetProcessSetting()
+    lib.StartServer()
 }

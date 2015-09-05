@@ -26,6 +26,8 @@ func BuildContainer(imageName string, port int, appId int)(containerId string, r
     //判断共享目录是否有文件，如果没有则需要创建必须文件
     if !checkDirExist(shareDirPath + "/code"){
         os.MkdirAll(shareDirPath+"/code", 0777)
+    }
+    if !checkDirExist(shareDirPath + "/log"){
         os.MkdirAll(shareDirPath+"/log", 0777)
     }
     

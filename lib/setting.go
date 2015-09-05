@@ -21,6 +21,14 @@ func GetApplicationValueFromKey(key string)(value string){
     return "123"
 }
 
+/*
+*信息校验秘钥判定
+*@param token 需要检测的密码
+*@param result(bool) 校验结果
+*/
+func CheckToken(token string)(result bool){
+    return token == GetSettingValue("token")
+}
 
 /*
  *把参数写入配置文件
@@ -33,6 +41,7 @@ func writeSettingFile(data map[string]string){
     if err == nil{
         fp.WriteString("gitPath=" + data["gitPath"] + "\n")
         fp.WriteString("applicationPath=" + data["applicationPath"] + "\n")
+        fp.WriteString("token=" + data["token"] + "\n")
         fmt.Println("配置文件创建成功！")
     }else{
         fmt.Println("创建配置文件失败！")
@@ -44,16 +53,19 @@ func writeSettingFile(data map[string]string){
  *读取控制台输入
  */
 func handleWrite(){
-    var gitPath, applicationPath string
+    var gitPath, applicationPath, token string
     data := make(map[string]string)
     
     fmt.Println("请输入git仓库地址")
     fmt.Scanln(&gitPath)
     fmt.Println("请输入代码仓库地址")
     fmt.Scanln(&applicationPath)
+    fmt.Println("请输入校验密码")
+    fmt.Scanln(&token)
     
     data["gitPath"] = gitPath
     data["applicationPath"] = applicationPath
+    data["token"] = token
     
    writeSettingFile(data)
 }
