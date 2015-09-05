@@ -3,7 +3,6 @@ package lib
 import(
     "fmt"
     "strconv"
-    "os"
     "os/exec"
 )
 
@@ -18,8 +17,7 @@ func UpdateCode(appId int, gitUrl string){
     gitPath := GetSettingValue("gitPath") + "/" + strconv.Itoa(appId)
     
     //判断目录是否存在
-    _,  err := os.Stat(gitPath)
-    if os.IsExist(err){
+    if checkDirExist(gitPath){
         command = "cd " + gitPath + " && git pull origin master"
     }else{
         command = " git clone " + gitUrl + " " + gitPath
@@ -39,7 +37,7 @@ func UpdateCode(appId int, gitUrl string){
 func UpdateApplicationCode(appId int){
     
     gitPath := GetSettingValue("gitPath") + "/" + strconv.Itoa(appId)
-    applicationPath := GetSettingValue("applicationPath") +  "/" + strconv.Itoa(appId)   +  "/code/"
+    applicationPath := GetSettingValue("applicationPath") +  "/" + strconv.Itoa(appId)   +  "/code"
     
     command := "mkdir -p " + applicationPath
     cmd := exec.Command("/bin/bash", "-c", command)

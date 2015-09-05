@@ -15,16 +15,16 @@ import(
 *@param shareDirPath 镜像名称
 *@return 新建容器的id（string）， 创建结果（bool）
 */
-func BuildContainer(imageName string, port int, shareDirPath string)(containerId string, result bool){
+func BuildContainer(imageName string, port int, appId int)(containerId string, result bool){
     
     containerId = "0"
     result = true
     
     portData := strconv.Itoa(port) + ":80"
+    shareDirPath := GetSettingValue("applicationPath") + "/" + strconv.Itoa(appId)
     
     //判断共享目录是否有文件，如果没有则需要创建必须文件
-    _, err := os.Stat(shareDirPath)
-    if os.IsNotExist(err){
+    if !checkDirExist(shareDirPath + "/code"){
         os.MkdirAll(shareDirPath+"/code", 0777)
         os.MkdirAll(shareDirPath+"/log", 0777)
     }

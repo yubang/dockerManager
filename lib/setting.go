@@ -92,3 +92,17 @@ func GetSettingValue(key string) (value string){
     }
     return ""
 }
+
+
+/*
+*判断文件夹是否存在
+*
+*/
+func checkDirExist(dirPath string)(result bool){
+    fi, err := os.Stat(dirPath)
+    if err != nil {
+        return os.IsExist(err)
+    } else {
+        return fi.IsDir()
+    }
+}
