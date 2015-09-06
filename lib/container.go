@@ -5,6 +5,7 @@ import(
     "fmt"
     "strconv"
     "os"
+    "strings"
 )
 
 
@@ -37,7 +38,8 @@ func BuildContainer(imageName string, port int, appId int)(containerId string, r
     cmd := exec.Command("/bin/bash", "-c", command)
     data,_ := cmd.Output()
     containerId = string(data)
-    //cmd.Run()
+    containerId = strings.Replace(containerId, "\n", "", -1)
+    
     fmt.Println("执行命令：" + command)
     fmt.Println(containerId)
     return containerId, result
